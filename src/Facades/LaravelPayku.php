@@ -1,6 +1,6 @@
 <?php
 
-namespace SebaCarrasco93\LaravelPayku;
+namespace SebaCarrasco93\LaravelPayku\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

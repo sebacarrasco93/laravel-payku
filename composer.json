@@ -20,6 +20,7 @@
         }
     },
     "require": {
+        "guzzlehttp/guzzle": "^7.0.1",
         "php": "^7.3|^8.0"
     },
     "require-dev": {
@@ -29,7 +30,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "SebaCarrasco93\\LaravelPayku\\LaravelPaykuServiceProvider"
+                "SebaCarrasco93\\LaravelPayku\\LaravelPaykuServiceProvider",
+                "SebaCarrasco93\\LaravelPayku\\RouteServiceProvider"
             ],
             "aliases": {
                 "LaravelPayku": "SebaCarrasco93\\LaravelPayku\\Facades\\LaravelPayku"
