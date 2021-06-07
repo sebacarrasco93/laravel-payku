@@ -10,9 +10,15 @@ class LaravelPaykuServiceProvider extends ServiceProvider
     {
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
 
+        $this->loadMigrationsFrom($this->basePath('database/migrations'),);
+
         $this->publishes([
             $this->basePath('config/laravel-payku.php') => base_path('config/laravel-payku.php')
         ], 'laravel-payku-config');
+
+        $this->publishes([
+            $this->basePath('database/migrations.php') => database_path('migrations')
+        ], 'laravel-payku-migrations');
     }
 
     public function register()

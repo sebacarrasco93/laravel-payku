@@ -19,13 +19,13 @@ class PaykuController
         return LaravelPayku::create($data['order'], $data['subject'], $data['amount'], $data['email']);
     }
 
-    public function return($orderNumber)
+    public function return($orderId)
     {
-        return LaravelPayku::return($orderNumber);
+        return LaravelPayku::return($orderId);
     }
 
-    public function notify($orderNumber)
+    public function notify($orderId)
     {
-        return LaravelPayku::notify($orderNumber);
+        return LaravelPayku::notify($orderId);
     }
 }

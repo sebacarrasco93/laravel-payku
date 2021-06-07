@@ -28,6 +28,15 @@ class TestCase extends BaseTestCase
         config(['laravel-payku.private_token' => null]);
     }
 
+    protected function getEnvironmentSetup($app)
+    {
+        $app['config']->set('database.default', 'testing');
+        $app['config']->set('database.conection.testing', [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+        ]);
+    }
+
     protected function getPackageProviders($app)
     {
         return [

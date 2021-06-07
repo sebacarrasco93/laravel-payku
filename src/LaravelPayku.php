@@ -52,9 +52,7 @@ class LaravelPayku
     public function create(string $orderId, string $subject, int $amountCLP, string $email)
     {
         $body = $this->client->request('POST', config('laravel-payku.base_url') . '/transaction', [
-            'json' => [
-                $this->createOrder($orderId, $subject, $amountCLP, $email)
-            ],
+            'json' => $this->createOrder($orderId, $subject, $amountCLP, $email),
             'headers' => [
                 'Authorization' => 'Bearer ' . config('laravel-payku.public_token'),
             ]
@@ -64,13 +62,25 @@ class LaravelPayku
         dd($response);
     }
 
-    public function return($orderNumber)
+    public function returnOrder(string $orderId)
     {
-        dd($orderNumber);
+        return $orderId;
     }
 
-    public function notify($orderNumber)
+    public function return(string $transactionId)
     {
-        dd($orderNumber);
+        $body = $this->client->request('GET', config('laravel-payku.base_url') . '/transaction', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . config('laravel-payku.public_token'),
+            ]
+        ])->getBody();
+        $response = json_decode($body);
+
+        dd($response);
+    }
+
+    public function notify(string $transactionId)
+    {
+        dd($transactionId);
     }
 }
