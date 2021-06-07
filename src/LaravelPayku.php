@@ -2,8 +2,12 @@
 
 namespace SebaCarrasco93\LaravelPayku;
 
+use SebaCarrasco93\LaravelPayku\Traits\Database;
+
 class LaravelPayku
 {
+    use Database;
+
     public $client;
     public $minimumKeys = ['base_url', 'public_token', 'private_token'];
 
@@ -43,7 +47,7 @@ class LaravelPayku
             'order' => $orderId, 
             'subject' => $subject,
             'amount' => $amountCLP,
-            'payment' => $paymentId, // TODO: What is this (?)
+            'payment' => $paymentId, // Weppay
             'urlreturn' => route('payku.return', $orderId),
             'urlnotify' => route('payku.notify', $orderId),
         ];
@@ -57,9 +61,14 @@ class LaravelPayku
                 'Authorization' => 'Bearer ' . config('laravel-payku.public_token'),
             ]
         ])->getBody();
+        
         $response = json_decode($body);
 
-        dd($response);
+        $this->storeTransaction($response, $amountCLP);
+
+        // dd($response);
+
+        return redirect()->away($response->url);
     }
 
     public function returnOrder(string $orderId)
@@ -69,12 +78,15 @@ class LaravelPayku
 
     public function return(string $transactionId)
     {
-        $body = $this->client->request('GET', config('laravel-payku.base_url') . '/transaction', [
+        $body = $this->client->request('GET', config('laravel-payku.base_url') . '/transaction/' . $transactionId, [
             'headers' => [
                 'Authorization' => 'Bearer ' . config('laravel-payku.public_token'),
             ]
         ])->getBody();
+
         $response = json_decode($body);
+
+        $this->storePayment($response);
 
         dd($response);
     }
