@@ -65,11 +65,16 @@ class LaravelPayku
         
         $response = json_decode($body);
 
-        // $this->storeTransaction($response->id, $response);
-
-        dd($response);
+        $this->initTransaction($orderId, $amountCLP, $response);
 
         return redirect()->away($response->url);
+    }
+
+    public function initTransaction($orderId, $amountCLP, $response)
+    {
+        $transaction = new PaykuTransaction();
+
+        return $transaction->init($orderId, $amountCLP, $response->id);
     }
 
     public function storeTransaction($order_id, $response)

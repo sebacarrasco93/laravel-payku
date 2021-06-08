@@ -20,7 +20,7 @@ class LaravelPaykuDatabaseTest extends TestCase
 
     /** @test */
     function it_can_init_an_incomplete_transaction_by_creating_with_few_data() {
-        $incomplete = $this->transaction->init('1', 1000);
+        $incomplete = $this->transaction->init('1', 1000, 'qwerty123');
 
         $this->assertEquals('1', PaykuTransaction::first()->id);
         $this->assertEquals(1000, PaykuTransaction::first()->amount);
@@ -28,7 +28,7 @@ class LaravelPaykuDatabaseTest extends TestCase
 
     /** @test */
     function it_can_search_for_a_specific_transaction() {
-        $this->transaction->init('1', 1000);
+        $this->transaction->init('1', 1000, 'qwerty123');
 
         $found = $this->transaction->search('1');
 
@@ -39,14 +39,14 @@ class LaravelPaykuDatabaseTest extends TestCase
     function it_throws_an_exception_when_searching_a_invalid_transaction() {
         $this->expectException(\Exception::class);
 
-        $this->transaction->init('1', 1000);
+        $this->transaction->init('1', 1000, 'qwerty123');
 
         $this->transaction->search('2');
     }
 
     /** @test */
     function it_can_complete_a_transaction() {        
-        $this->transaction->init('1', 1000);
+        $this->transaction->init('1', 1000, 'qwerty123');
 
         $updated_transaction = $this->transaction->complete('1', [
             'status' => 'success',
@@ -69,7 +69,7 @@ class LaravelPaykuDatabaseTest extends TestCase
     function it_cant_complete_a_transaction_if_doesnt_exists() {
         $this->expectException(\Exception::class);
 
-        $this->transaction->init('1', 1000);
+        $this->transaction->init('1', 1000, 'qwerty123');
 
         $this->transaction->complete('BBB', [
             'invalid' => 'invalid',
@@ -78,7 +78,7 @@ class LaravelPaykuDatabaseTest extends TestCase
 
     /** @test */
     function it_can_be_marked_as_paid() {
-        $this->transaction->init('1', 1000);
+        $this->transaction->init('1', 1000, 'qwerty123');
         
         $this->transaction->markAsPaid('1', [
             'start' => date('y'),
