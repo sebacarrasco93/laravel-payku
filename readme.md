@@ -1,4 +1,3 @@
-
 # Laravel Payku
 
 📦 A simple implementation, and ready to use package for Payku.
@@ -35,8 +34,6 @@ If you you are in production, set your {environment} variable
 PAYKU_BASE_URL=https://app.payku.cl/api
 ``` 
 
-Easy Peasy!
-
 ### Usage
 
 Example of a method
@@ -44,6 +41,8 @@ Example of a method
 ```php
 //
 ```
+
+Easy Peasy!
 
 ### Extra
 
