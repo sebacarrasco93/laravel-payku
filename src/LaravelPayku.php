@@ -101,10 +101,10 @@ class LaravelPayku
 
         $response = json_decode($body);
 
-        $this->storeTransaction($found->id, $response);
+        return $this->completeTransaction($found->id, $response);
     }
 
-    public function storeTransaction($order_id, $response)
+    public function completeTransaction($order_id, $response)
     {
         $transaction = new PaykuTransaction();
         

@@ -38,9 +38,16 @@ class PaykuTransaction extends Model
     {
         $found = $this->search($id);
 
-        $array = collect($array)->only('status', 'created_at', 'email', 'subject', 'amount')->toArray();
+        $updatedTransaction = $found->update(collect($array)
+            ->only('status', 'created_at', 'email', 'subject', 'amount')
+            ->toArray()
+        );
 
-        $updated = $found->update($array);
+        $markAsPaid = $this->markAsPaid($id, collect(collect($array)['payment'])->toArray());
+
+        if ($updatedTransaction && $markAsPaid) {
+            return true;
+        }
     }
 
     public function markAsPaid(string $id, array $array)

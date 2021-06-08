@@ -53,6 +53,14 @@ class LaravelPaykuDatabaseTest extends TestCase
             'order_id' => 100,
             'subject' => 'Test',
             'email' => 'seba@sextanet.cl',
+            'payment' => [
+                'start' => date('y'),
+                'end' => date('y'),
+                'media' => 1, // Webpay
+                'verification_key' => md5(microtime()),
+                'authorization_code' => md5(microtime()),
+                'currency' => 'CLP',
+            ]
         ]);
 
         $transaction = PaykuTransaction::first();

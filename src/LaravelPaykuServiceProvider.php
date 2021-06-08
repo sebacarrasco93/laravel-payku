@@ -17,7 +17,7 @@ class LaravelPaykuServiceProvider extends ServiceProvider
         ], 'laravel-payku-config');
 
         $this->publishes([
-            $this->basePath('database/migrations.php') => database_path('migrations')
+            $this->basePath('database/migrations') => database_path('migrations')
         ], 'laravel-payku-migrations');
     }
 
