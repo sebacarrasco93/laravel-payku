@@ -21,32 +21,31 @@ class PaykuTransaction extends Model
         ]);
     }
 
-    public function complete(string $id, $array)
+    public function search(string $id)
     {
         $found = $this->find($id);
 
         if ($found) {
-            return $found->update($array);
+            return $found;
         }
 
         throw new \Exception('Invalid ID');
     }
 
+    public function complete(string $id, $array)
+    {
+        return $this->search($id)->update($array);
+    }
+
     public function markAsPaid(string $id, array $array)
     {
-        $found = $this->find($id);
-
-        if ($found) {
-            return $found->payment()->create([
-                'start' => date($array['start']),
-                'end' => date($array['end']),
-                'media' => 'Weypay',
-                'verification_key' => $array['verification_key'],
-                'authorization_code' => $array['authorization_code'],
-                'currency' => $array['currency'],
-            ]);
-        }
-
-        throw new \Exception('Invalid ID');
+        return $this->search($id)->payment()->create([
+            'start' => date($array['start']),
+            'end' => date($array['end']),
+            'media' => 'Weypay',
+            'verification_key' => $array['verification_key'],
+            'authorization_code' => $array['authorization_code'],
+            'currency' => $array['currency'],
+        ]);
     }
 }

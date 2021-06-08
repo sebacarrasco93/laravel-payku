@@ -27,6 +27,24 @@ class LaravelPaykuDatabaseTest extends TestCase
     }
 
     /** @test */
+    function it_can_search_for_a_specific_transaction() {
+        $this->transaction->init('1', 1000);
+
+        $found = $this->transaction->search('1');
+
+        $this->assertInstanceOf(PaykuTransaction::class, $found);
+    }
+
+    /** @test */
+    function it_throws_an_exception_when_searching_a_invalid_transaction() {
+        $this->expectException(\Exception::class);
+
+        $this->transaction->init('1', 1000);
+
+        $this->transaction->search('2');
+    }
+
+    /** @test */
     function it_can_complete_a_transaction() {        
         $this->transaction->init('1', 1000);
 
