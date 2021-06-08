@@ -13,12 +13,12 @@ class PaykuTransaction extends Model
         return $this->hasOne(PaykuPayment::class, 'transaction_id');
     }
 
-    public function init(string $id, int $amount, string $orderId)
+    public function init(string $id, int $amount, string $order_id)
     {
         return $this->create([
             'id' => $id,
             'amount' => $amount,
-            'order_id' => $orderId,
+            'order_id' => $order_id,
             'status' => 'register',
         ]);
     }
@@ -36,7 +36,11 @@ class PaykuTransaction extends Model
 
     public function complete(string $id, $array)
     {
-        return $this->search($id)->update($array);
+        $found = $this->search($id);
+
+        $array = collect($array)->only('status', 'created_at', 'email', 'subject', 'amount')->toArray();
+
+        $updated = $found->update($array);
     }
 
     public function markAsPaid(string $id, array $array)

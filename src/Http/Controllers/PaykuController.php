@@ -20,16 +20,16 @@ class PaykuController
         return LaravelPayku::create($data['order'], $data['subject'], $data['amount'], $data['email']);
     }
 
-    public function return($transactionId)
+    public function return($order_id)
     {
-        $transaction = PaykuTransaction::findOrFail($transactionId);
+        $transaction = PaykuTransaction::findOrFail($order_id);
 
-        return LaravelPayku::return($transaction->order_id);
+        return LaravelPayku::return($transaction->id);
     }
 
-    public function notify($transactionId)
+    public function notify($order_id)
     {
-        $transaction = PaykuTransaction::findOrFail($transactionId);
+        $transaction = PaykuTransaction::findOrFail($order_id);
 
         return LaravelPayku::notify($transaction->order_id);
     }
