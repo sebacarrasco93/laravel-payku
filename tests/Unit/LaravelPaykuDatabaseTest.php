@@ -14,74 +14,64 @@ class LaravelPaykuDatabaseTest extends TestCase
     public function setUp() : void
     {
         parent::setUp();
+
+        $this->transaction = new PaykuTransaction();
     }
 
     /** @test */
-    function it_can_create_a_transaction() {
-        $transaction = PaykuTransaction::create([
-            'order_id' => 'AAA',
-            'amount' => 1000,
-        ]);
+    function it_can_init_an_incomplete_transaction_by_creating_with_few_data() {
+        $incomplete = $this->transaction->init('1', 1000);
 
-        $this->assertEquals('AAA', $transaction->order_id);
+        $this->assertEquals('1', PaykuTransaction::first()->id);
+        $this->assertEquals(1000, PaykuTransaction::first()->amount);
     }
 
     /** @test */
     function it_can_complete_a_transaction() {        
-        $original_transaction = PaykuTransaction::create([
-            'order_id' => 'AAA',
-            'amount' => 1000,
-        ]);
+        $this->transaction->init('1', 1000);
 
-        $transaction = new PaykuTransaction();
-
-        $updated_transaction = $transaction->complete('AAA', [
+        $updated_transaction = $this->transaction->complete('1', [
             'status' => 'success',
             'order_id' => 100,
             'subject' => 'Test',
             'email' => 'seba@sextanet.cl',
         ]);
 
-        $this->assertNotNull(PaykuTransaction::first()->status);
-        // $this->assertNotNull(PaykuTransaction::first()->id);
-        $this->assertNotNull(PaykuTransaction::first()->order_id);
-        $this->assertNotNull(PaykuTransaction::first()->email);
-        $this->assertNotNull(PaykuTransaction::first()->subject);
-        $this->assertNotNull(PaykuTransaction::first()->amount);
+        $transaction = PaykuTransaction::first();
+
+        $this->assertEquals(1, $transaction->id);
+        $this->assertEquals('success', $transaction->status);
+        $this->assertEquals('100', $transaction->order_id);
+        $this->assertEquals('seba@sextanet.cl', $transaction->email);
+        $this->assertEquals('Test', $transaction->subject);
+        $this->assertEquals(1000, $transaction->amount);
     }
 
     /** @test */
     function it_cant_complete_a_transaction_if_doesnt_exists() {
         $this->expectException(\Exception::class);
 
-        $original_transaction = PaykuTransaction::create([
-            'order_id' => 'AAA',
-            'amount' => 1000,
-        ]);
+        $this->transaction->init('1', 1000);
 
-        $transaction = new PaykuTransaction();
-
-        $transaction->complete('BBB', [
+        $this->transaction->complete('BBB', [
             'invalid' => 'invalid',
         ]);
     }
 
     /** @test */
-    function it_can_be_paid() {
-        $transaction = PaykuTransaction::create([
-            'order_id' => 'AAA',
-            'amount' => 1000,
-        ]);
-
-        $payment = PaykuPayment::create([
-            'transaction_id' => $transaction->id,
+    function it_can_be_marked_as_paid() {
+        $this->transaction->init('1', 1000);
+        
+        $this->transaction->markAsPaid('1', [
             'start' => date('y'),
             'end' => date('y'),
-            'media' => 'Weypay',
-            'verification_key' => md5(1),
-            'authorization_code' => '1111',
+            'media' => 1, // Webpay
+            'verification_key' => md5(microtime()),
+            'authorization_code' => md5(microtime()),
             'currency' => 'CLP',
         ]);
+
+        $transaction = PaykuTransaction::first();
 
         $this->assertInstanceOf(PaykuPayment::class, $transaction->payment);
     }

@@ -6,20 +6,17 @@ use SebaCarrasco93\LaravelPayku\Models\PaykuTransaction;
 
 trait Database
 {
-    public function storeTransaction($response)
+    public function completeTransaction($order_id, $response)
     {
         $response = collect($response);
 
-        return PaykuTransaction::updateOrCreate([
-            'order_id' => $response['id'],
-        ], [
-            'order_id' => $response['id'],
-            'amount' => $response['amount'],
-            'status' => $response['status'] ?? null,
-            'id' => $response['id'] ?? null,
-            'email' => $response['email'] ?? null,
-            'subject' => $response['subject'] ?? null,
-            'amount' => $response['amount'] ?? null,
+        $transaction = new PaykuTransaction();
+        
+        $updated_transaction = $transaction->complete($order_id, [
+            'status' => 'success',
+            'order_id' => 100,
+            'subject' => 'Test',
+            'email' => 'seba@sextanet.cl',
         ]);
     }
 

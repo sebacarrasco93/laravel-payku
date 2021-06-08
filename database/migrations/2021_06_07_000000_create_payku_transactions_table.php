@@ -14,9 +14,9 @@ class CreatePaykuTransactionsTable extends Migration
     public function up()
     {
         Schema::create('payku_transactions', function (Blueprint $table) {
-            $table->string('id')->index()->unique()->nullable(); // transaction_id
+            $table->string('id')->index()->unique(); // transaction_id: 1, 2, 3
             $table->string('status')->nullable(); // ['success', '...']
-            $table->string('order_id')->unique(); // order
+            $table->string('order_id')->nullable()->unique(); // order: trx8956fbcc9e5f4ba62
             $table->string('email')->nullable();
             $table->string('subject')->nullable();
             $table->unsignedInteger('amount');

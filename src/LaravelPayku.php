@@ -2,6 +2,7 @@
 
 namespace SebaCarrasco93\LaravelPayku;
 
+use SebaCarrasco93\LaravelPayku\Models\PaykuTransaction;
 use SebaCarrasco93\LaravelPayku\Traits\Database;
 
 class LaravelPayku
@@ -64,11 +65,20 @@ class LaravelPayku
         
         $response = json_decode($body);
 
-        $this->storeTransaction($response, $amountCLP);
+        // $this->storeTransaction($response->id, $response);
 
-        // dd($response);
+        dd($response);
 
         return redirect()->away($response->url);
+    }
+
+    public function storeTransaction($order_id, $response)
+    {
+        $transaction = new PaykuTransaction();
+
+        dd($order_id);
+        
+        return $transaction->complete($order_id, $response);
     }
 
     public function returnOrder(string $orderId)
