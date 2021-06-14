@@ -54,7 +54,7 @@ class LaravelPayku
         ];
     }
 
-    public function create(string $order_id, string $subject, int $amountCLP, string $email)
+    public function postApi(string $order_id, string $subject, int $amountCLP, string $email)
     {
         $body = $this->client->request('POST', config('laravel-payku.base_url') . '/transaction', [
             'json' => $this->createOrder($order_id, $subject, $amountCLP, $email),
@@ -63,18 +63,23 @@ class LaravelPayku
             ]
         ])->getBody();
         
-        $response = json_decode($body);
+        return json_decode($body);
+    }
 
-        $this->initTransaction($order_id, $amountCLP, $response);
+    public function create(string $order_id, string $subject, int $amountCLP, string $email)
+    {
+        $response = $this->postApi($order_id, $subject, $amountCLP, $email);
+
+        $this->initTransaction($order_id, $amountCLP, $response, $email);
 
         return redirect()->away($response->url);
     }
 
-    public function initTransaction($order_id, $amountCLP, $response)
+    public function initTransaction($order_id, $amountCLP, $response, $email)
     {
         $transaction = new PaykuTransaction();
 
-        return $transaction->markAsRegister($order_id, $amountCLP, $response->id);
+        return $transaction->markAsRegister($order_id, $amountCLP, $response->id, $email);
     }
 
     // public function returnOrder(string $order_id)
