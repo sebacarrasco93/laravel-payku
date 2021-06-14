@@ -12,6 +12,14 @@ class LaravelPayku
     public $client;
     public $minimumKeys = ['base_url', 'public_token', 'private_token'];
 
+    // From API
+    public $allowedTransactionsStatuses = ['register', 'pending', 'success', 'failed'];
+    public $allowedTransactionsKeys = ['status', 'id', 'created_at', 'order', 'email', 'subject', 'amount'];
+    public $allowedPaymentKeys = [
+        'start', 'end', 'media', 'transaction_id', 'verification_key', 'authorization_code',
+        'last_4_digits', 'installments', 'card_type', 'additional_parameters', 'currency',
+    ];
+
     public function __construct()
     {
         $this->client = new \GuzzleHttp\Client();
