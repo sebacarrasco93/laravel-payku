@@ -74,7 +74,7 @@ class LaravelPayku
     {
         $transaction = new PaykuTransaction();
 
-        return $transaction->init($order_id, $amountCLP, $response->id);
+        return $transaction->markAsRegister($order_id, $amountCLP, $response->id);
     }
 
     // public function returnOrder(string $order_id)

@@ -13,7 +13,7 @@ class PaykuTransaction extends Model
         return $this->hasOne(PaykuPayment::class, 'transaction_id');
     }
 
-    public function init(string $id, int $amount, string $order_id)
+    public function markAsRegister(string $id, int $amount, string $order_id)
     {
         return $this->create([
             'id' => $id,
