@@ -11,10 +11,10 @@ class PaykuController
     public function create(Request $request)
     {
         $data = $request->validate([
-            'email' => 'required',
+            'email' => 'required|email',
             'order' => 'required', 
             'subject' => 'required',
-            'amount' => 'required',
+            'amount' => 'required|int',
         ]);
 
         return LaravelPayku::create($data['order'], $data['subject'], $data['amount'], $data['email']);
