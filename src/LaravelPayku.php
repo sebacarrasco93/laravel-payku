@@ -41,6 +41,29 @@ class LaravelPayku
         throw new \Exception('Please set all keys in your .env file');
     }
 
+    public function postApi(string $order_id, string $subject, int $amountCLP, string $email)
+    {
+        $body = $this->client->request('POST', config('laravel-payku.base_url') . '/transaction', [
+            'json' => $this->createOrder($order_id, $subject, $amountCLP, $email),
+            'headers' => [
+                'Authorization' => 'Bearer ' . config('laravel-payku.public_token'),
+            ]
+        ])->getBody();
+        
+        return json_decode($body);
+    }
+
+    public function getApi($found)
+    {
+        $body = $this->client->request('GET', config('laravel-payku.base_url') . '/transaction/' . $found->order_id, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . config('laravel-payku.public_token'),
+            ]
+        ])->getBody();
+
+        return json_decode($body);
+    }
+
     public function createOrder(string $order_id, string $subject, int $amountCLP, string $email, $paymentId = 1)
     {
         return [
@@ -54,28 +77,15 @@ class LaravelPayku
         ];
     }
 
-    public function postApi(string $order_id, string $subject, int $amountCLP, string $email)
-    {
-        $body = $this->client->request('POST', config('laravel-payku.base_url') . '/transaction', [
-            'json' => $this->createOrder($order_id, $subject, $amountCLP, $email),
-            'headers' => [
-                'Authorization' => 'Bearer ' . config('laravel-payku.public_token'),
-            ]
-        ])->getBody();
-        
-        return json_decode($body);
-    }
-
     public function create(string $order_id, string $subject, int $amountCLP, string $email)
     {
         $response = $this->postApi($order_id, $subject, $amountCLP, $email);
-
-        $this->initTransaction($order_id, $amountCLP, $response, $email);
+        $database = $this->markAsRegister($order_id, $amountCLP, $response, $email);
 
         return redirect()->away($response->url);
     }
 
-    public function initTransaction($order_id, $amountCLP, $response, $email)
+    public function markAsRegister($order_id, $amountCLP, $response, $email)
     {
         $transaction = new PaykuTransaction();
 
@@ -97,14 +107,7 @@ class LaravelPayku
     public function return(string $id)
     {
         $found = $this->findById($id);
-
-        $body = $this->client->request('GET', config('laravel-payku.base_url') . '/transaction/' . $found->order_id, [
-            'headers' => [
-                'Authorization' => 'Bearer ' . config('laravel-payku.public_token'),
-            ]
-        ])->getBody();
-
-        $response = json_decode($body);
+        $response = $this->getApi($found);
 
         return $this->completeTransaction($found->id, $response);
     }
