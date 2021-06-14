@@ -22,7 +22,12 @@ class LaravelPayku
 
     public function __construct()
     {
-        $this->client = new \GuzzleHttp\Client();
+        $this->client = new \GuzzleHttp\Client([
+            'headers' => [
+                'Authorization' => 'Bearer ' . config('laravel-payku.public_token'),
+            ],
+            'base_uri' => config('laravel-payku.base_url') . '/'
+        ]);
 
         $this->hasValidConfig();
     }
@@ -51,11 +56,8 @@ class LaravelPayku
 
     public function postApi(string $order_id, string $subject, int $amountCLP, string $email)
     {
-        $body = $this->client->request('POST', config('laravel-payku.base_url') . '/transaction', [
+        $body = $this->client->request('POST', 'transaction', [
             'json' => $this->createOrder($order_id, $subject, $amountCLP, $email),
-            'headers' => [
-                'Authorization' => 'Bearer ' . config('laravel-payku.public_token'),
-            ]
         ])->getBody();
         
         return json_decode($body);
@@ -63,11 +65,7 @@ class LaravelPayku
 
     public function getApi($found)
     {
-        $body = $this->client->request('GET', config('laravel-payku.base_url') . '/transaction/' . $found->order_id, [
-            'headers' => [
-                'Authorization' => 'Bearer ' . config('laravel-payku.public_token'),
-            ]
-        ])->getBody();
+        $body = $this->client->request('GET', 'transaction/' . $found->order_id)->getBody();
 
         return json_decode($body);
     }
