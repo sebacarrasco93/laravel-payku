@@ -9,8 +9,12 @@ class LaravelPayku
 {
     use Database;
 
+    // URLs
+    const URL_API_DEV = 'https://des.payku.cl/api';
+    const URL_API_PROD = 'https://app.payku.cl/api';
+
     public $client;
-    public $minimumKeys = ['base_url', 'public_token', 'private_token'];
+    public $minimumKeys = ['public_token', 'private_token'];
 
     // From API
     public $allowedTransactionsStatuses = ['register', 'pending', 'success', 'failed'];
@@ -26,10 +30,23 @@ class LaravelPayku
             'headers' => [
                 'Authorization' => 'Bearer ' . config('laravel-payku.public_token'),
             ],
-            'base_uri' => config('laravel-payku.base_url') . '/'
+            'base_uri' => $this->apiRoute() . '/'
         ]);
 
         $this->hasValidConfig();
+    }
+
+    public function apiRoute()
+    {
+        if (config('app.base_url')) {
+            return config('app.base_url');
+        }
+        
+        if (config('app.env') == 'production') {
+            return self::URL_API_PROD;
+        }
+
+        return self::URL_API_DEV;
     }
 
     public function knowFilledKeys()

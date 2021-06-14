@@ -20,9 +20,31 @@ class LaravelPaykuFacadeTest extends TestCase
     }
 
     /** @test */
+    function it_knows_which_base_url_in_production_environment() {
+        config(['app.env' => 'production']);
+        $this->assertEquals('https://app.payku.cl/api', LaravelPayku::apiRoute());
+    }
+
+    /** @test */
+    function it_knows_which_base_url_in_local_and_testing_environment() {
+        config(['app.env' => 'local']);
+        $this->assertEquals('https://des.payku.cl/api', LaravelPayku::apiRoute());
+
+        config(['app.env' => 'testing']);
+        $this->assertEquals('https://des.payku.cl/api', LaravelPayku::apiRoute());
+    }
+
+    /** @test */
+    function it_can_override_the_base_url() {
+        config(['app.env' => 'production']);
+        config(['app.base_url' => 'https://des.payku.cl/api']);
+
+        $this->assertEquals('https://des.payku.cl/api', LaravelPayku::apiRoute());
+    }
+
+    /** @test */
     function it_knows_only_its_filled_keys() {
         $this->assertEquals([
-            'base_url' => true,
             'private_token' => true,
             'public_token' => true,
         ], LaravelPayku::knowFilledKeys());
