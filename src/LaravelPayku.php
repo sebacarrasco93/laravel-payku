@@ -68,7 +68,7 @@ class LaravelPayku
             return true;
         }
 
-        throw new \Exception('Please set all keys in your .env file');
+        throw new \Exception('Please set all PAYKU keys in your .env file.');
     }
 
     public function postApi(string $order_id, string $subject, int $amountCLP, string $email)

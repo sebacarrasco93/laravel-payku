@@ -23,26 +23,23 @@ PAYKU_PUBLIC_TOKEN={your_public_token}
 PAYKU_PRIVATE_TOKEN={your_private_token}
 ```
 
-Laravel Payku automatically will set the environment URL based in your `APP_ENV` variable.
-So, the only thing you need to change is `APP_ENV` your project's `.env` file
+#### Important:
+
+Laravel Payku automatically will set the environment URL based in your `APP_ENV` key, in your `.env` project's file
+
+For example, if you set your `APP_ENV` to `local`, it will use `https://des.payku.cl/api`
 
 ```bash
 APP_ENV=local # will set https://des.payku.cl/api
 ```
 
+Otherwise, if your `APP_ENV` is  on `production`, it will use `https://app.payku.cl/api`
+
 ```bash
 APP_ENV=production # will set https://app.payku.cl/api
 ```
 
-Anyway, if you want to override the URL in a different environment, you can set the `PAYKU_BASE_URL` key in your `.env` file
-
-```bash
-PAYKU_BASE_URL=https://des.payku.cl/api
-```
-or...
-```bash
-PAYKU_BASE_URL=https://app.payku.cl/api
-```
+If you want to force a specific API URL in another environment, you can [learn how to do it](readme-changing-api-url.md)
 
 ### Usage
 
