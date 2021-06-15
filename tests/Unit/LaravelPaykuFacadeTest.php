@@ -45,9 +45,9 @@ class LaravelPaykuFacadeTest extends TestCase
     /** @test */
     function it_knows_only_its_filled_keys() {
         $this->assertEquals([
-            'private_token' => true,
-            'public_token' => true,
-        ], LaravelPayku::knowFilledKeys());
+            'private_token' => 'someprivatetoken',
+            'public_token' => 'somepublictoken',
+        ], LaravelPayku::findApiKeys());
     }
 
     /** @test */

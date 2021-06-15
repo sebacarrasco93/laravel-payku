@@ -26,6 +26,8 @@ class PaykuController
 
         $detail = LaravelPayku::return($transaction->id);
 
+        dd(1);
+
         dd($detail);
     }
 

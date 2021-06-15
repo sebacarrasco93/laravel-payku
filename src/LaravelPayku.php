@@ -9,6 +9,9 @@ class LaravelPayku
 {
     use Database;
 
+    // From
+    public $status;
+
     // URLs
     const URL_API_DEV = 'https://des.payku.cl/api';
     const URL_API_PROD = 'https://app.payku.cl/api';
@@ -16,7 +19,7 @@ class LaravelPayku
     public $client;
     public $minimumApiKeys = ['public_token', 'private_token'];
 
-    // From API
+    // For handle with API
     public $allowedTransactionsStatuses = ['register', 'pending', 'success', 'failed'];
     public $allowedTransactionsKeys = ['status', 'id', 'created_at', 'order', 'email', 'subject', 'amount'];
     public $allowedPaymentKeys = [
@@ -87,6 +90,13 @@ class LaravelPayku
         return json_decode($body);
     }
 
+    public function handleAPIResponse($response)
+    {
+        if (in_array($response['status'], $this->allowedTransactionsStatuses)) {
+            $this->status = $response['status'];
+        }
+    }
+
     public function createOrder(string $order_id, string $subject, int $amountCLP, string $email, $paymentId = 1)
     {
         return [
@@ -138,6 +148,7 @@ class LaravelPayku
     public function completeTransaction($order_id, $response)
     {
         $transaction = new PaykuTransaction();
+        dd($response);
         
         return $transaction->complete($order_id, $response);
     }
