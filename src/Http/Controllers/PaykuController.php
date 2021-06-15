@@ -12,7 +12,7 @@ class PaykuController
     {
         $data = $request->validate([
             'email' => 'required|email',
-            'order' => 'required', 
+            'order' => 'required|unique:payku_transactions,id', 
             'subject' => 'required',
             'amount' => 'required|int',
         ]);
