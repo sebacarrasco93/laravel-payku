@@ -14,7 +14,7 @@ class LaravelPayku
     const URL_API_PROD = 'https://app.payku.cl/api';
 
     public $client;
-    public $minimumKeys = ['public_token', 'private_token'];
+    public $minimumApiKeys = ['public_token', 'private_token'];
 
     // From API
     public $allowedTransactionsStatuses = ['register', 'pending', 'success', 'failed'];
@@ -49,12 +49,12 @@ class LaravelPayku
         return self::URL_API_DEV;
     }
 
-    public function knowFilledKeys()
+    public function findApiKeys()
     {
         $found = [];
         
-        foreach ($this->minimumKeys as $key) {
-            $found[$key] = isset(config('laravel-payku')[$key]);
+        foreach ($this->minimumApiKeys as $key) {
+            $found[$key] = config('laravel-payku')[$key];
         }
 
         return array_filter($found);
@@ -62,9 +62,9 @@ class LaravelPayku
 
     public function hasValidConfig()
     {
-        $count = count($this->minimumKeys);
+        $count = count($this->minimumApiKeys);
 
-        if (count($this->knowFilledKeys()) == $count) {
+        if (count($this->findApiKeys()) == $count) {
             return true;
         }
 
