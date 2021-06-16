@@ -4,10 +4,11 @@ namespace SebaCarrasco93\LaravelPayku;
 
 use SebaCarrasco93\LaravelPayku\Models\PaykuTransaction;
 use SebaCarrasco93\LaravelPayku\Traits\DatabaseSimulation;
+use SebaCarrasco93\LaravelPayku\Traits\PrepareOrders;
 
 class LaravelPayku
 {
-    use DatabaseSimulation;
+    use DatabaseSimulation, PrepareOrders;
 
     // From Response API
     public $hasValidResponse = false;
@@ -79,7 +80,7 @@ class LaravelPayku
     public function postApi(string $order_id, string $subject, int $amountCLP, string $email)
     {
         $body = $this->client->request('POST', 'transaction', [
-            'json' => $this->createOrder($order_id, $subject, $amountCLP, $email),
+            'json' => $this->prepareOrder($order_id, $subject, $amountCLP, $email),
         ])->getBody();
         
         return json_decode($body);
@@ -127,19 +128,6 @@ class LaravelPayku
                 }
             }
         }
-    }
-
-    public function createOrder(string $order_id, string $subject, int $amountCLP, string $email, $paymentId = 1)
-    {
-        return [
-            'email' => $email,
-            'order' => $order_id, 
-            'subject' => $subject,
-            'amount' => $amountCLP,
-            'payment' => $paymentId, // Weppay
-            'urlreturn' => route('payku.return', $order_id),
-            'urlnotify' => route('payku.notify', $order_id),
-        ];
     }
 
     public function create(string $order_id, string $subject, int $amountCLP, string $email)

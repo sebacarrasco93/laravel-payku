@@ -64,7 +64,7 @@ class LaravelPaykuFacadeTest extends TestCase
     }
 
     /** @test */
-    function it_can_create_an_order() {
+    function it_can_prepare_an_order() {
         $this->assertEquals([
             'email' => 'seba@sextanet.cl',
             'order' => 'AAA',
@@ -73,7 +73,7 @@ class LaravelPaykuFacadeTest extends TestCase
             'payment' => '1',
             'urlreturn' => route('payku.return', 'AAA'),
             'urlnotify' => route('payku.notify', 'AAA'),
-        ], LaravelPayku::createOrder('AAA', 'Test', 1000, 'seba@sextanet.cl'));
+        ], LaravelPayku::prepareOrder('AAA', 'Test', 1000, 'seba@sextanet.cl'));
     }
 
     // /** @test */
