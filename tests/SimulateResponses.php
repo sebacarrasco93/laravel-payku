@@ -14,11 +14,11 @@ trait SimulateResponses
             'email' => 'example@domain.com',
             'subject' => 'Pending transaction',
             'amount' => '1000',
-            'payment' => [],
-            'gateway_response' => [
+            'payment' => collect([]),
+            'gateway_response' => collect([
                 'status' => 'pending',
                 'message' => 'waiting response',
-            ]
+            ]),
         ];
 
         return collect($response);
@@ -29,9 +29,9 @@ trait SimulateResponses
         $response = [
             'status' => 'failed',
             'type' => 'Unprocessable Entity',
-            'message_error' => [
+            'message_error' => collect([
                 'order' => 'invalid, max [20] characters',
-            ],
+            ]),
         ];
 
         return collect($response);
@@ -58,7 +58,7 @@ trait SimulateResponses
             'email' => 'example@domain.com',
             'subject' => 'Successful transaction',
             'amount' => '1000',
-            'payment' => [
+            'payment' => collect([
                 'start' => now(),
                 'end' => now()->addMinute(),
                 'media' => 'Webpay',
@@ -69,11 +69,11 @@ trait SimulateResponses
                 'card_type' => 'VN',
                 'additional_parameters' => '',
                 'currency' => 'CLP',
-            ],
-            'gateway_response' => [
+            ]),
+            'gateway_response' => collect([
                 'status' => 'success',
                 'message' => 'successful transaction',
-            ]
+            ]),
         ];
 
         return collect($response);

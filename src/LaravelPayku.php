@@ -3,20 +3,21 @@
 namespace SebaCarrasco93\LaravelPayku;
 
 use SebaCarrasco93\LaravelPayku\Models\PaykuTransaction;
-use SebaCarrasco93\LaravelPayku\Traits\Database;
+use SebaCarrasco93\LaravelPayku\Traits\DatabaseSimulation;
 
 class LaravelPayku
 {
-    use Database;
+    use DatabaseSimulation;
 
     // From Response API
-    public $status, $id, $created_at, $order, $email, $subject, $amount;
     public $hasValidResponse = false;
+    public $status, $id, $created_at, $order, $email, $subject, $amount;
 
     // URLs
     const URL_API_DEV = 'https://des.payku.cl/api';
     const URL_API_PROD = 'https://app.payku.cl/api';
 
+    // For API Interaction...
     public $client;
     public $minimumApiKeys = ['public_token', 'private_token'];
 

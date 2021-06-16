@@ -4,7 +4,7 @@ namespace SebaCarrasco93\LaravelPayku\Traits;
 
 use SebaCarrasco93\LaravelPayku\Models\PaykuTransaction;
 
-trait Database
+trait DatabaseSimulation
 {
     public function completeTransaction($order_id, $response)
     {
