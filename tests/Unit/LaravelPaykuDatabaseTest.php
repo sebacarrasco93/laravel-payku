@@ -50,7 +50,7 @@ class LaravelPaykuDatabaseTest extends TestCase
 
         $updated_transaction = $this->transaction->complete('1', [
             'status' => 'success',
-            'order_id' => 100,
+            'order' => 100,
             'subject' => 'Test',
             'email' => 'seba@sextanet.cl',
             'payment' => [
@@ -67,7 +67,7 @@ class LaravelPaykuDatabaseTest extends TestCase
 
         $this->assertEquals(1, $transaction->id);
         $this->assertEquals('success', $transaction->status);
-        $this->assertEquals('qwerty123', $transaction->order_id);
+        $this->assertEquals('qwerty123', $transaction->order);
         $this->assertEquals('seba@sextanet.cl', $transaction->email);
         $this->assertEquals('Test', $transaction->subject);
         $this->assertEquals(1000, $transaction->amount);

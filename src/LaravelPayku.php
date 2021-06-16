@@ -106,6 +106,15 @@ class LaravelPayku
         }
     }
 
+    public function saveAPIResponse($response)
+    {
+        $this->handleAPIResponse($response);
+
+        $firstResponse = $response->except('payment', 'gateway_response')->toArray();
+
+        PaykuTransaction::updateOrCreate(['id' => $response['id']], $firstResponse);
+    }
+
     public function createOrder(string $order_id, string $subject, int $amountCLP, string $email, $paymentId = 1)
     {
         return [
