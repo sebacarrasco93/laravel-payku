@@ -9,8 +9,8 @@ class LaravelPayku
 {
     use Database;
 
-    // From
-    public $status;
+    // From Response API
+    public $status, $id, $created_at, $order, $email, $subject, $amount;
 
     // URLs
     const URL_API_DEV = 'https://des.payku.cl/api';
@@ -21,7 +21,7 @@ class LaravelPayku
 
     // For handle with API
     public $allowedTransactionsStatuses = ['register', 'pending', 'success', 'failed'];
-    public $allowedTransactionsKeys = ['status', 'id', 'created_at', 'order', 'email', 'subject', 'amount'];
+    // public $allowedTransactionsKeys = ['status', 'id', 'created_at', 'order', 'email', 'subject', 'amount'];
     public $allowedPaymentKeys = [
         'start', 'end', 'media', 'transaction_id', 'verification_key', 'authorization_code',
         'last_4_digits', 'installments', 'card_type', 'additional_parameters', 'currency',
@@ -92,8 +92,13 @@ class LaravelPayku
 
     public function handleAPIResponse($response)
     {
-        if (in_array($response['status'], $this->allowedTransactionsStatuses)) {
-            $this->status = $response['status'];
+        if (! in_array($response['status'], $this->allowedTransactionsStatuses)) {
+            throw new \Exception("Invalid response status: " . $response['status']);
+        }
+
+        // $this->status = $response['status'];
+        foreach ($response as $key => $value) {
+            $this->$key = $value;
         }
     }
 

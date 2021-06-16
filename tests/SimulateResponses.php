@@ -78,4 +78,17 @@ trait SimulateResponses
 
         return collect($response);
     }
+
+    public function invalidResponse()
+    {
+        $response = [
+            'status' => 'invalid',
+            'type' => '...',
+            'another_invalid_values' => [
+                'nope' => 'error',
+            ],
+        ];
+
+        return collect($response);
+    }
 }

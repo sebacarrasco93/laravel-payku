@@ -50,4 +50,12 @@ class CanHandleAPIResponsesTest extends TestCase
         $this->laravelPayku->handleAPIResponse($response);
         $this->assertEquals('success', $this->laravelPayku->status);
     }
+
+    /** @test */
+    function it_can_handle_an_error_when_it_has_an_invalid_status() {
+        $this->expectException(\Exception::class);
+        $response = $this->invalidResponse();
+
+        $this->laravelPayku->handleAPIResponse($response);
+    }
 }
