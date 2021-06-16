@@ -112,7 +112,21 @@ class LaravelPayku
 
         $firstResponse = $response->except('payment', 'gateway_response')->toArray();
 
-        PaykuTransaction::updateOrCreate(['id' => $response['id']], $firstResponse);
+        if ($firstResponse['status'] != 'failed') {
+            $transaction = PaykuTransaction::updateOrCreate(['id' => $response['id']], $firstResponse);
+
+            // dd($response['payment']->count());
+
+            // dd($response);
+            // dd(1);
+
+            if (isset($response['payment'])) {
+                if ($response['payment']->count()) {
+                    $paymentResponse = $response['payment']->toArray();
+                    $transaction->payment()->updateOrCreate($paymentResponse);
+                }
+            }
+        }
     }
 
     public function createOrder(string $order_id, string $subject, int $amountCLP, string $email, $paymentId = 1)

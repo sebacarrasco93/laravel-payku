@@ -19,7 +19,8 @@ class CreatePaykuTransactionsTable extends Migration
             $table->string('order')->nullable()->unique(); // before: order: trx8956fbcc9e5f4ba62
             $table->string('email')->nullable();
             $table->string('subject')->nullable();
-            $table->unsignedInteger('amount');
+            $table->text('url')->nullable();
+            $table->unsignedInteger('amount')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });

@@ -64,6 +64,7 @@ trait SimulateResponses
                 'media' => 'Webpay',
                 'transaction_id' => 'trx...',
                 'authorization_code' => '1213',
+                'verification_key' => '12345abcdef...',
                 'last_4_digits' => '6623',
                 'installments' => 0,
                 'card_type' => 'VN',
