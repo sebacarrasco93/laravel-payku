@@ -11,6 +11,7 @@ class LaravelPayku
 
     // From Response API
     public $status, $id, $created_at, $order, $email, $subject, $amount;
+    public $hasValidResponse = false;
 
     // URLs
     const URL_API_DEV = 'https://des.payku.cl/api';
@@ -95,6 +96,8 @@ class LaravelPayku
         if (! in_array($response['status'], $this->allowedTransactionsStatuses)) {
             throw new \Exception("Invalid response status: " . $response['status']);
         }
+
+        $this->hasValidResponse = true;
 
         // $this->status = $response['status'];
         foreach ($response as $key => $value) {
