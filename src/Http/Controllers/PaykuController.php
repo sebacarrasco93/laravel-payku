@@ -27,10 +27,10 @@ class PaykuController
         dd($detail);
     }
 
-    public function notify($order_id)
+    public function notify($order)
     {
-        $transaction = PaykuTransaction::findOrFail($order_id);
+        $notify = LaravelPayku::notify($order);
 
-        return LaravelPayku::notify($transaction->order_id);
+        dd($notify);
     }
 }

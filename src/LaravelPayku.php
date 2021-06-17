@@ -142,19 +142,11 @@ class LaravelPayku
         $response = $this->getApi($found);
         $this->saveAPIResponse($response);
 
-        // return $this->completeTransaction($found->id, $response);
+        return redirect('payku.notify');
     }
 
-    public function completeTransaction($transaction_id, $response)
+    public function notify($order)
     {
-        // $transaction = new PaykuTransaction();
-        dd($transaction_id);
-        
-        // return $transaction->complete($transaction_id, $response);
-    }
-
-    public function notify(string $transaction_id)
-    {
-        dd($transaction_id);
+        dd($order);
     }
 }

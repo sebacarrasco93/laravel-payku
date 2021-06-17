@@ -14,7 +14,7 @@ class CreatePaykuPaymentsTable extends Migration
     public function up()
     {
         Schema::create('payku_payments', function (Blueprint $table) {
-            $table->string('transaction_id');
+            $table->string('transaction_id')->unique();
             $table->date('start');
             $table->date('end');
             $table->string('media');
