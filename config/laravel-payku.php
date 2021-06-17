@@ -30,9 +30,4 @@ return [
     */
 
     'route_prefix' => 'payku',
-
-    'routes' => [
-        'return' => 'return',
-        'notify' => 'notify',
-    ],
 ];
