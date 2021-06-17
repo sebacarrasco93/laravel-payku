@@ -20,13 +20,9 @@ class PaykuController
         return LaravelPayku::create($data['order'], $data['subject'], $data['amount'], $data['email']);
     }
 
-    public function return($order_id)
+    public function return($order)
     {
-        $transaction = PaykuTransaction::findOrFail($order_id);
-
-        $detail = LaravelPayku::return($transaction->id);
-
-        dd(1);
+        $detail = LaravelPayku::return($order);
 
         dd($detail);
     }

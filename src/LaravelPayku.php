@@ -78,20 +78,20 @@ class LaravelPayku
         throw new \Exception('Please set all PAYKU keys in your .env file.');
     }
 
-    public function postApi(string $order_id, string $subject, int $amountCLP, string $email)
+    public function postApi(string $transaction_id, string $subject, int $amountCLP, string $email)
     {
         $body = $this->client->request('POST', 'transaction', [
-            'json' => $this->prepareOrder($order_id, $subject, $amountCLP, $email),
+            'json' => $this->prepareOrder($transaction_id, $subject, $amountCLP, $email),
         ])->getBody();
         
-        return json_decode($body);
+        return json_decode($body, true);
     }
 
-    public function getApi($found)
+    public function getApi(PaykuTransaction $transaction)
     {
-        $body = $this->client->request('GET', 'transaction/' . $found->order_id)->getBody();
+        $body = $this->client->request('GET', 'transaction/' . $transaction->id)->getBody();
 
-        return json_decode($body);
+        return json_decode($body, true);
     }
 
     public function handleAPIResponse($response)
@@ -110,7 +110,9 @@ class LaravelPayku
 
     public function saveAPIResponse($response)
     {
+        $response = collect($response);
         $this->handleAPIResponse($response);
+        // dd($response);
 
         $firstResponse = $response->except('payment', 'gateway_response')->toArray();
 
@@ -118,40 +120,41 @@ class LaravelPayku
             $transaction = PaykuTransaction::updateOrCreate(['id' => $response['id']], $firstResponse);
 
             if (isset($response['payment'])) {
-                if ($response['payment']->count()) {
-                    $paymentResponse = $response['payment']->toArray();
-                    $transaction->payment()->updateOrCreate($paymentResponse);
+                $payment = collect($response['payment']);
+                if ($payment->count()) {
+                    $transaction->payment()->updateOrCreate($payment->toArray());
                 }
             }
         }
     }
 
-    public function create(string $order_id, string $subject, int $amountCLP, string $email)
+    public function create(string $transaction_id, string $subject, int $amountCLP, string $email)
     {
-        $response = $this->postApi($order_id, $subject, $amountCLP, $email);
-        $database = $this->markAsRegister($order_id, $amountCLP, $response, $email);
+        $response = $this->postApi($transaction_id, $subject, $amountCLP, $email);
+        $database = $this->saveAPIResponse($response);
 
-        return redirect()->away($response->url);
+        return redirect()->away($response['url']);
     }
 
-    public function return(string $id)
+    public function return($order)
     {
-        $found = $this->findById($id);
+        $found = PaykuTransaction::whereOrder($order)->firstOrFail();
         $response = $this->getApi($found);
+        $this->saveAPIResponse($response);
 
-        return $this->completeTransaction($found->id, $response);
+        // return $this->completeTransaction($found->id, $response);
     }
 
-    public function completeTransaction($order_id, $response)
+    public function completeTransaction($transaction_id, $response)
     {
-        $transaction = new PaykuTransaction();
-        dd($response);
+        // $transaction = new PaykuTransaction();
+        dd($transaction_id);
         
-        return $transaction->complete($order_id, $response);
+        // return $transaction->complete($transaction_id, $response);
     }
 
-    public function notify(string $order_id)
+    public function notify(string $transaction_id)
     {
-        dd($order_id);
+        dd($transaction_id);
     }
 }
