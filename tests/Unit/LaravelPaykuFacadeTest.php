@@ -75,10 +75,4 @@ class LaravelPaykuFacadeTest extends TestCase
             'urlnotify' => route('payku.notify', 'AAA'),
         ], LaravelPayku::prepareOrder('AAA', 'Test', 1000, 'seba@sextanet.cl'));
     }
-
-    /** @test */
-    function it_can_see_an_order() {
-        $this->markTestIncomplete();
-        $order = LaravelPayku::returnOrder('AAA');
-    }
 }
