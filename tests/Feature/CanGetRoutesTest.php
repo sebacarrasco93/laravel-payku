@@ -15,7 +15,7 @@ class CanGetRoutesTest extends TestCase
 
     /** @test */
     function it_can_create_an_order() {
-        $this->markTestIncomplete();
+        // $this->markTestIncomplete();
         // $this->withoutExceptionHanpdling();
 
         $order = [
@@ -28,7 +28,7 @@ class CanGetRoutesTest extends TestCase
             'urlnotify' => route('payku.notify', 'AAA'),
         ];
 
-        dd($this->post(route('payku.create', $order))->getContent());
+        $this->post(route('payku.create', $order))->getContent();
 
         $this->post(route('payku.create', $order))->assertSuccessful();
     }

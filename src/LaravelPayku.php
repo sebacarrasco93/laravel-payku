@@ -108,11 +108,15 @@ class LaravelPayku
         }
     }
 
-    public function saveAPIResponse($response)
+    public function saveAPIResponse($response, $transaction_id = null)
     {
         $response = collect($response);
         $this->handleAPIResponse($response);
         // dd($response);
+
+        if ($transaction_id) { // Creating...
+            $response['order'] = $transaction_id;
+        }
 
         $firstResponse = $response->except('payment', 'gateway_response')->toArray();
 
@@ -131,7 +135,7 @@ class LaravelPayku
     public function create(string $transaction_id, string $subject, int $amountCLP, string $email)
     {
         $response = $this->postApi($transaction_id, $subject, $amountCLP, $email);
-        $database = $this->saveAPIResponse($response);
+        $database = $this->saveAPIResponse($response, $transaction_id);
 
         return redirect()->away($response['url']);
     }
@@ -142,11 +146,11 @@ class LaravelPayku
         $response = $this->getApi($found);
         $this->saveAPIResponse($response);
 
-        return redirect('payku.notify');
+        return redirect()->route('payku.notify', $order);
     }
 
     public function notify($order)
     {
-        dd($order);
+        return PaykuTransaction::whereOrder($order)->firstOrFail();
     }
 }

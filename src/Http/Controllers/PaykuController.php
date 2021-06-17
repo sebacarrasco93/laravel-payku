@@ -24,13 +24,13 @@ class PaykuController
     {
         $detail = LaravelPayku::return($order);
 
-        dd($detail);
+        return $detail;
     }
 
     public function notify($order)
     {
         $notify = LaravelPayku::notify($order);
 
-        dd($notify);
+        return $notify;
     }
 }
