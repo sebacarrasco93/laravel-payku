@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PaykuTransaction extends Model
 {
     protected $guarded = [];
+    public $incrementing = false;
 
     public function payment()
     {

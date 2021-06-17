@@ -20,6 +20,14 @@ class CanHandleAPIResponsesTest extends TestCase
     }
 
     /** @test */
+    function it_can_handle_when_it_has_register_status() {
+        $response = $this->registerResponse();
+
+        $this->laravelPayku->handleAPIResponse($response);
+        $this->assertEquals('register', $this->laravelPayku->status);
+    }
+
+    /** @test */
     function it_can_handle_when_it_has_pending_status() {
         $response = $this->pendingResponse();
 
@@ -33,14 +41,6 @@ class CanHandleAPIResponsesTest extends TestCase
 
         $this->laravelPayku->handleAPIResponse($response);
         $this->assertEquals('failed', $this->laravelPayku->status);
-    }
-
-    /** @test */
-    function it_can_handle_when_it_has_register_status() {
-        $response = $this->registerResponse();
-
-        $this->laravelPayku->handleAPIResponse($response);
-        $this->assertEquals('register', $this->laravelPayku->status);
     }
 
     /** @test */

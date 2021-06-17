@@ -4,6 +4,17 @@ namespace SebaCarrasco93\LaravelPayku\Tests;
 
 trait SimulateResponses
 {
+    public function registerResponse()
+    {
+        $response = [
+            'status' => 'register',
+            'id' => 'trx...',
+            'url' => 'https://des.payku.cl/gateway/cobro?id=trx3adbf8e836510de62&valid=4e31d8c7c9',
+        ];
+
+        return collect($response);
+    }
+
     public function pendingResponse()
     {
         $response = [
@@ -32,17 +43,6 @@ trait SimulateResponses
             'message_error' => collect([
                 'order' => 'invalid, max [20] characters',
             ]),
-        ];
-
-        return collect($response);
-    }
-
-    public function registerResponse()
-    {
-        $response = [
-            'status' => 'register',
-            'id' => 'trx...',
-            'url' => 'https://des.payku.cl/gateway/cobro?id=trx3adbf8e836510de62&valid=4e31d8c7c9',
         ];
 
         return collect($response);

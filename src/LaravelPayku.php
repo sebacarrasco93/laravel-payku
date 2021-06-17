@@ -5,6 +5,7 @@ namespace SebaCarrasco93\LaravelPayku;
 use SebaCarrasco93\LaravelPayku\Models\PaykuTransaction;
 use SebaCarrasco93\LaravelPayku\Traits\DatabaseSimulation;
 use SebaCarrasco93\LaravelPayku\Traits\PrepareOrders;
+use Illuminate\Support\Collection;
 
 class LaravelPayku
 {
@@ -116,11 +117,6 @@ class LaravelPayku
         if ($firstResponse['status'] != 'failed') {
             $transaction = PaykuTransaction::updateOrCreate(['id' => $response['id']], $firstResponse);
 
-            // dd($response['payment']->count());
-
-            // dd($response);
-            // dd(1);
-
             if (isset($response['payment'])) {
                 if ($response['payment']->count()) {
                     $paymentResponse = $response['payment']->toArray();
@@ -136,25 +132,6 @@ class LaravelPayku
         $database = $this->markAsRegister($order_id, $amountCLP, $response, $email);
 
         return redirect()->away($response->url);
-    }
-
-    public function markAsRegister($order_id, $amountCLP, $response, $email)
-    {
-        $transaction = new PaykuTransaction();
-
-        return $transaction->markAsRegister($order_id, $amountCLP, $response->id, $email);
-    }
-
-    // public function returnOrder(string $order_id)
-    // {
-    //     return $order_id;
-    // }
-
-    public function findById(string $id)
-    {
-        $transaction = new PaykuTransaction();
-
-        return $transaction->find($id);
     }
 
     public function return(string $id)
