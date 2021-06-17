@@ -24,11 +24,36 @@ class CanSaveAPIResponsesTest extends TestCase
 
     /** @test */
     function it_can_save_when_it_has_register_status() {
-        $response = $this->registerResponse();
+        $this->laravelPayku->saveAPIResponse($this->registerResponse());
 
-        $this->laravelPayku->saveAPIResponse($response);
+        $registerStatusTransaction = PaykuTransaction::first();
 
-        $transaction = PaykuTransaction::first();
-        $this->assertEquals('trx...', $transaction->id);
+        $this->assertNotNull($registerStatusTransaction->id);
+        $this->assertNotNull($registerStatusTransaction->status);
+        $this->assertNotNull($registerStatusTransaction->url);
+    }
+
+    /** @test */
+    function it_can_save_when_it_has_register_status_and_passes_to_success_status() {
+        $this->laravelPayku->saveAPIResponse($this->registerResponse());
+        $registerStatusTransaction = PaykuTransaction::first();
+
+        $this->assertNull($registerStatusTransaction->order);
+        $this->assertNull($registerStatusTransaction->email);
+        $this->assertNull($registerStatusTransaction->subject);
+        $this->assertNull($registerStatusTransaction->amount);
+
+        $this->laravelPayku->saveAPIResponse($this->successResponse());
+        $registerStatusTransaction = PaykuTransaction::first();
+
+        $this->assertCount(1, PaykuTransaction::get());
+
+        $this->assertNotNull($registerStatusTransaction->id);
+        $this->assertNotNull($registerStatusTransaction->status);
+        $this->assertNotNull($registerStatusTransaction->order);
+        $this->assertNotNull($registerStatusTransaction->email);
+        $this->assertNotNull($registerStatusTransaction->subject);
+        $this->assertNotNull($registerStatusTransaction->url);
+        $this->assertNotNull($registerStatusTransaction->amount);
     }
 }
