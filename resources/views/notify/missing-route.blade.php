@@ -2,10 +2,13 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Missing route</title>
+    <title>Laravel Payku | {{ trans('laravel-payku::missing.title') }}</title>
 </head>
 <body>
-    <h1>It works!</h1>
+    <header>
+        <img src="https://payku.cl/wp-content/uploads/2019/05/payku_2x.png" alt="">
+        <h1>{{ trans('laravel-payku::missing.it_works') }}</h1>
+    </header>
 
     <div class="detail">
         <div class="group">
@@ -34,18 +37,15 @@
         </div>
     </div>
 
-    {{-- @foreach ($result as $key => $item)
-        <div>{{ $key }}</div>
-    @endforeach --}}
+    <p>{{ trans('laravel-payku::missing.finished_1') }} "<strong>{{ $routeName }}</strong>", {{ trans('laravel-payku::missing.finished_2') }}</p>
 
     <pre>{{ $result }}</pre>
 
-    <p>Your order was finished! but if you want to show a nice view, you need to create a route with name "{{ $routeName }}", to showing final result to your user</p>
 </body>
 </html>
 
 <style>
-    @import('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+    @import('https://fonts.googleapis.com/css2?family=Karla:wght@400;600&display=swap');
 
     :root {
         --color-one:  #000036;
@@ -53,15 +53,27 @@
         --color-three:  #fff;
     }
 
+    * {
+        margin:  0;
+        padding:  0;
+    }
+
     html {
-        font-family: 'Poppins', sans-serif;
-        background: var(--color-one);
+        font-family: 'Karla', sans-serif;
+        background: #1b2032;
         color: var(--color-three);
         text-align: center;
     }
 
+    header {
+        background: #4d39e9;
+        padding: 30px 40px;
+        display: flex;
+        justify-content: space-between;
+    }
+
     h1 {
-        color: var(--color-two);
+
     }
 
     .detail {
@@ -69,8 +81,7 @@
         color: var(--color-one);
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        border-radius: 5px;
-        padding: 5px;
+        padding: 50px 5px;
     }
 
     .group {
@@ -88,7 +99,7 @@
     }
 
     p {
-        background: var(--color-two);
+        color: #f8b526;
         padding: 10px;
     }
 </style>

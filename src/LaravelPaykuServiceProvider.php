@@ -13,6 +13,8 @@ class LaravelPaykuServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom($this->basePath('database/migrations'));
         
         $this->loadViewsFrom($this->basePath('resources/views'), 'payku');
+        
+        $this->loadTranslationsFrom($this->basePath('resources/lang'), 'laravel-payku');
 
         $this->publishes([
             $this->basePath('config/laravel-payku.php') => base_path('config/laravel-payku.php')
