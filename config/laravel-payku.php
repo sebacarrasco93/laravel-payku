@@ -30,4 +30,18 @@ return [
     */
 
     'route_prefix' => 'payku',
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Finished Route name
+    |--------------------------------------------------------------------------
+    |
+    | You can set a custom name for showing the final result of transaction
+    |
+    |
+    */
+
+    'route_finish_name' => 'payku.result',
+
 ];

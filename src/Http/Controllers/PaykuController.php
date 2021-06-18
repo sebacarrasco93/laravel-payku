@@ -3,6 +3,7 @@
 namespace SebaCarrasco93\LaravelPayku\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use SebaCarrasco93\LaravelPayku\Facades\LaravelPayku;
 use SebaCarrasco93\LaravelPayku\Models\PaykuTransaction;
 
@@ -29,8 +30,15 @@ class PaykuController
 
     public function notify($order)
     {
-        $notify = LaravelPayku::notify($order);
+        $result = LaravelPayku::notify($order);
+        $routeName = config('laravel-payku.route_finish_name');
 
-        return $notify;
+        $routeExists = Route::has($routeName);
+        
+        if ($routeExists) {
+            return redirect()->route($routeName, $result);
+        }
+
+        return view('payku::notify.missing-route', compact('result', 'routeName'));
     }
 }

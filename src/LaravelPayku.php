@@ -126,7 +126,7 @@ class LaravelPayku
             if (isset($response['payment'])) {
                 $payment = collect($response['payment']);
                 if ($payment->count()) {
-                    $transaction->payment()->updateOrCreate($payment->toArray());
+                    $transaction->payment()->create($payment->toArray());
                 }
             }
         }
