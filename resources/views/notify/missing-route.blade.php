@@ -40,27 +40,33 @@
 
     <pre>{{ $result }}</pre>
 
-    <p>Your order was <strong>finished</strong>!, but if you want to show a nice view, you need to create a route with name "{{ $routeName }}", to showing final result to your user</p>
+    <p>Your order was finished! but if you want to show a nice view, you need to create a route with name "{{ $routeName }}", to showing final result to your user</p>
 </body>
 </html>
 
 <style>
     @import('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
+    :root {
+        --color-one:  #000036;
+        --color-two:  #00E48C;
+        --color-three:  #fff;
+    }
+
     html {
         font-family: 'Poppins', sans-serif;
-        background: #000036;
-        color: #fff;
+        background: var(--color-one);
+        color: var(--color-three);
         text-align: center;
     }
 
     h1 {
-        color: #00E48C;
+        color: var(--color-two);
     }
 
     .detail {
-        background: #fff;
-        color: #000036;
+        background: var(--color-three);
+        color: var(--color-one);
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         border-radius: 5px;
@@ -82,7 +88,7 @@
     }
 
     p {
-        background: #00E48C;
+        background: var(--color-two);
         padding: 10px;
     }
 </style>
