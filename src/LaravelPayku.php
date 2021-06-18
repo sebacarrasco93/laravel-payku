@@ -153,4 +153,19 @@ class LaravelPayku
     {
         return PaykuTransaction::whereOrder($order)->firstOrFail();
     }
+
+    public function findById($id)
+    {
+        return PaykuTransaction::whereId($id)->firstOrFail();
+    }
+
+    public function hasStatusSuccess($id)
+    {
+        return $this->findById($id)->status == 'success';
+    }
+
+    public function hasStatusPending($id)
+    {
+        return $this->findById($id)->status == 'pending';
+    }
 }

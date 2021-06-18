@@ -75,4 +75,27 @@ class LaravelPaykuFacadeTest extends TestCase
             'urlnotify' => route('payku.notify', 'AAA'),
         ], LaravelPayku::prepareOrder('AAA', 'Test', 1000, 'seba@sextanet.cl'));
     }
+
+    /** @test */
+    function it_knows_its_details() {
+        $payment = PaykuTransaction::create(['id' => 'trx...']);
+
+        $this->assertInstanceOf(PaykuTransaction::class, LaravelPayku::findById('trx...'));
+    }
+
+    /** @test */
+    function it_knows_when_it_has_status_success() {
+        $payment = PaykuTransaction::create(['id' => 'trx...', 'status' => 'success']);
+
+        $this->assertTrue(LaravelPayku::hasStatusSuccess('trx...'));
+        $this->assertFalse(LaravelPayku::hasStatusPending('trx...'));
+    }
+
+    /** @test */
+    function it_knows_when_it_has_status_pending() {
+        $payment = PaykuTransaction::create(['id' => 'trx...', 'status' => 'pending']);
+
+        $this->assertTrue(LaravelPayku::hasStatusPending('trx...'));
+        $this->assertFalse(LaravelPayku::hasStatusSuccess('trx...'));
+    }
 }
