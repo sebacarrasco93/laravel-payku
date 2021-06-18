@@ -139,8 +139,6 @@ class LaravelPayku
         $response = $this->postApi($transaction_id, $subject, $amountCLP, $email);
         $database = $this->saveAPIResponse($response, $transaction_id);
 
-        dd($response);
-
         return redirect()->away($response['url']);
     }
 
