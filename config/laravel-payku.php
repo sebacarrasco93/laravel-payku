@@ -42,6 +42,6 @@ return [
     |
     */
 
-    'route_finish_name' => 'payku.result',
+    'route_finish_name' => env('PAYKU_ROUTE_FINISH_NAME', 'payku.result'),
 
 ];
