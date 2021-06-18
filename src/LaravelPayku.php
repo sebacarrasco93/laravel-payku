@@ -129,6 +129,8 @@ class LaravelPayku
                     $transaction->payment()->create($payment->toArray());
                 }
             }
+        } else {
+            throw new \Exception("Can't create your transaction with ID ${transaction_id}");
         }
     }
 
@@ -136,6 +138,8 @@ class LaravelPayku
     {
         $response = $this->postApi($transaction_id, $subject, $amountCLP, $email);
         $database = $this->saveAPIResponse($response, $transaction_id);
+
+        dd($response);
 
         return redirect()->away($response['url']);
     }
