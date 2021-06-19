@@ -10,7 +10,7 @@ class CanGetRoutesTest extends TestCase
     {
         parent::setUp();
 
-        $this->fillAllKeys();
+        $this->fillApiKeys();
     }
 
     /** @test */

@@ -16,7 +16,7 @@ class LaravelPaykuFacadeTest extends TestCase
     {
         parent::setUp();
 
-        $this->fillAllKeys();
+        $this->fillApiKeys();
     }
 
     /** @test */
@@ -37,7 +37,7 @@ class LaravelPaykuFacadeTest extends TestCase
     /** @test */
     function it_can_override_the_base_url() {
         config(['app.env' => 'production']);
-        config(['app.base_url' => 'https://des.payku.cl/api']);
+        config(['laravel-payku.base_url' => 'https://des.payku.cl/api']);
 
         $this->assertEquals('https://des.payku.cl/api', LaravelPayku::apiRoute());
     }
@@ -59,7 +59,7 @@ class LaravelPaykuFacadeTest extends TestCase
     function it_knows_when_does_not_have_the_required_keys() {
         $this->expectException(\Exception::class);
 
-        $this->unfillAllKeys();
+        $this->unfillApiKeys();
         LaravelPayku::hasValidConfig();
     }
 

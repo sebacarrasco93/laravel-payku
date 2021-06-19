@@ -45,8 +45,8 @@ class LaravelPayku
 
     public function apiRoute()
     {
-        if (config('app.base_url')) {
-            return config('app.base_url');
+        if (config('laravel-payku.base_url')) {
+            return config('laravel-payku.base_url');
         }
         
         if (config('app.env') == 'production') {

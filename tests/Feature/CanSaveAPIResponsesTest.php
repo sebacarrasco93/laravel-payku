@@ -17,7 +17,7 @@ class CanSaveAPIResponsesTest extends TestCase
     {
         parent::setUp();
 
-        $this->fillAllKeys();
+        $this->fillApiKeys();
 
         $this->laravelPayku = new LaravelPayku();
     }

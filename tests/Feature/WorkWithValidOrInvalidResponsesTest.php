@@ -18,7 +18,7 @@ class WorkWithValidOrInvalidResponsesTest extends TestCase
     {
         parent::setUp();
 
-        $this->fillAllKeys();
+        $this->fillApiKeys();
 
         $this->laravelPayku = new LaravelPayku();
     }
@@ -53,6 +53,8 @@ class WorkWithValidOrInvalidResponsesTest extends TestCase
 
     /** @test */
     function it_cannot_create_the_failed_response_in_transactions() {
+        $this->expectException(\Exception::class);
+        
         $response = $this->failedResponse();
         
         $this->laravelPayku->saveAPIResponse($response);

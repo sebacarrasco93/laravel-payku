@@ -14,18 +14,18 @@ class TestCase extends BaseTestCase
         parent::setUp();
     }
 
-    public function fillAllKeys()
+    public function fillApiKeys()
     {
-        config(['laravel-payku.base_url' => 'somebaseurlvalue']);
         config(['laravel-payku.public_token' => 'somepublictoken']);
         config(['laravel-payku.private_token' => 'someprivatetoken']);
+        // config(['laravel-payku.base_url' => 'somebaseurlvalue']);
     }
 
-    public function unfillAllKeys()
+    public function unfillApiKeys()
     {
-        config(['laravel-payku.base_url' => null]);
         config(['laravel-payku.public_token' => null]);
         config(['laravel-payku.private_token' => null]);
+        // config(['laravel-payku.base_url' => null]);
     }
 
     protected function getEnvironmentSetup($app)
