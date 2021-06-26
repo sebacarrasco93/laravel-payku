@@ -37,4 +37,32 @@ class PaykuTransactionTest extends TestCase
 
         $this->assertCount(1, PaykuTransaction::pending()->get());
     }
+
+    /** @test */
+    function it_knows_when_it_was_marked_as_notified() {
+        $transaction = PaykuTransaction::create(['id' => 'trx...', 'notified_at' => null]);
+
+        $transaction->markAsNotified();
+
+        $this->assertNotNull($transaction->notified_at);
+    }
+
+    /** @test */
+    function it_can_notify_for_first_time() {
+        $transaction = PaykuTransaction::create(['id' => 'trx...', 'notified_at' => null]);
+
+        $this->nowIs('2021-07-26');
+
+        $now = now();
+
+        $transaction->notifyForFirstTime();
+
+        $this->assertEquals($now->format('Y-m-d'), $transaction->notified_at->format('Y-m-d'));
+
+        $transaction->notifyForFirstTime();
+
+        $this->nowIs('2021-07-30');
+
+        $this->assertNotEquals('2021-07-30', $transaction->notified_at->format('Y-m-d'));
+    }
 }

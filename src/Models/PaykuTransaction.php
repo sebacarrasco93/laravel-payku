@@ -28,4 +28,16 @@ class PaykuTransaction extends Model
     {
         $query->where('status', 'pending');
     }
+
+    public function markAsNotified()
+    {
+        return $this->update(['notified_at' => now()]);
+    }
+
+    public function notifyForFirstTime()
+    {
+        if (! $this->notified_at) {
+            return $this->markAsNotified();
+        }
+    }
 }

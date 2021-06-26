@@ -51,4 +51,10 @@ class TestCase extends BaseTestCase
             'LaravelPayKu' => '\SebaCarrasco93\LaravelPayku\Facades\LaravelPayku::class'
         ];
     }
+
+    
+    public function nowIs($datetime)
+    {
+        \Carbon\Carbon::setTestNow($datetime);
+    }
 }

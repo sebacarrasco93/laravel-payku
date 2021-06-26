@@ -21,6 +21,7 @@ class CreatePaykuTransactionsTable extends Migration
             $table->string('subject')->nullable();
             $table->text('url')->nullable();
             $table->unsignedInteger('amount')->nullable();
+            $table->datetime('notified_at')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });
