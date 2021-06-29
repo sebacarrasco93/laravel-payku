@@ -5,6 +5,7 @@ namespace SebaCarrasco93\LaravelPayku;
 use SebaCarrasco93\LaravelPayku\Models\PaykuTransaction;
 use SebaCarrasco93\LaravelPayku\Traits\DatabaseSimulation;
 use SebaCarrasco93\LaravelPayku\Traits\PrepareOrders;
+use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Support\Collection;
 
 class LaravelPayku
@@ -33,9 +34,10 @@ class LaravelPayku
 
     public function __construct()
     {
-        $this->client = new \GuzzleHttp\Client([
+        $this->client = new GuzzleClient([
             'headers' => [
                 'Authorization' => 'Bearer ' . config('laravel-payku.public_token'),
+                'User-Agent' => 'sebacarrasco93/laravel-payku'
             ],
             'base_uri' => $this->apiRoute() . '/'
         ]);
