@@ -18,10 +18,9 @@ class AddNewColumnsToTables extends Migration
         });
 
         Schema::table('payku_payments', function (Blueprint $table) {
-            $table->string('authorization_code')->nullable();
             $table->string('payment_key')->nullable();
             $table->string('transaction_key')->nullable();
-            $table->date('deposit_date')->nullable();
+            $table->datetime('deposit_date')->nullable();
         });
     }
 
