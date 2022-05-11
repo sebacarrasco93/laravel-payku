@@ -25,7 +25,7 @@ class LaravelPayku
     public $minimumApiKeys = ['public_token', 'private_token'];
 
     // For handle with API
-    public $allowedTransactionsStatuses = ['register', 'pending', 'success', 'failed'];
+    public $allowedTransactionsStatuses = ['register', 'pending', 'success', 'failed','rejected'];
     // public $allowedTransactionsKeys = ['status', 'id', 'created_at', 'order', 'email', 'subject', 'amount'];
     public $allowedPaymentKeys = [
         'start', 'end', 'media', 'transaction_id', 'verification_key', 'authorization_code',
